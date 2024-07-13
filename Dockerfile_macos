@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:1
+
+ARG BASE_VARIANT="fedora"
+ARG XX_VERSION="1.4.0"
+
+ARG OSX_SDK="MacOSX14.5.sdk"
+ARG OSX_SDK_URL="https://github.com/joseluisq/macosx-sdks/releases/download/14.5/${OSX_SDK}.tar.xz"
+ARG OSX_CROSS_COMMIT="fd32ecc6e0786369272be2da670bc9b5849b215a"
+
+FROM alpine:latest AS sdk
+RUN apk --update --no-cache add ca-certificates curl tar xz
+ARG OSX_SDK
+ARG OSX_SDK_URL
+RUN curl -sSL "$OSX_SDK_URL" -o "/$OSX_SDK.tar.xz"
+RUN mkdir /osxsdk && tar -xf "/$OSX_SDK.tar.xz" -C "/osxsdk"
+
+FROM alpine:latest AS osxcross-src
+RUN apk --update --no-cache add patch
+WORKDIR /osxcross
+ARG OSX_CROSS_COMMIT
+ADD "https://github.com/tpoechtrager/osxcross.git#${OSX_CROSS_COMMIT}" .
+# COPY patches/lcxx.patch .
+# RUN patch -p1 < lcxx.patch
+
+FROM fedora:latest AS build
+ARG OSX_SDK
+WORKDIR /tmp/osxcross
+COPY --link --from=osxcross-src /osxcross .
+RUN dnf install -y clang llvm-devel libxml2-devel libuuid-devel openssl-devel bash patch libstdc++-static make cmake git libmpc-devel diffutils
+COPY --link --from=sdk /$OSX_SDK.tar.xz ./tarballs/$OSX_SDK.tar.xz
+RUN OSX_VERSION_MIN=10.13 UNATTENDED=1 ./build.sh
+RUN OSX_VERSION_MIN=10.13 OCDEBUG=1 ./build_gcc.sh
+RUN mkdir -p /osxcross
+RUN mv target/* /osxcross
+
+ENV PATH="/osxcross/bin:$PATH"
+ENV LD_LIBRARY_PATH="/osxcross/lib"
+WORKDIR /src
+
+
+
+RUN dnf install -y dnf-plugins-core
+# RUN dnf builddep -y qemu
+RUN dnf install -y ninja-build glib2-devel glib2
+
+COPY build_macos.sh ./build_macos.sh
+
+CMD './build_macos.sh'
