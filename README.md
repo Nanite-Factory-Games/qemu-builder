@@ -1,5 +1,9 @@
 # QEMU Builder
 
+## Build all
+To attempt to build all platforms, run `./build.sh`.
+Right now this will only build for MacOS since i'm debugging issues with it.
+
 This project is meant to provide the statically linked binaries for qemu
 for the following platforms:
 
@@ -18,5 +22,5 @@ Apple can only be built one of 2 ways:
 
 The native compile requires being built on an apple machine,
 wheras the cross compile can be run on linux so long as the apple
-sdk is coppied. This does need to be grabbed from an apple device,
-but at least repeated compilation can be done on other devices.
+sdk is coppied. We use SDK's coppied from the apple cdn to do this,
+rather than having to get the SDK's manually from a mac.
