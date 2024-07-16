@@ -2,6 +2,9 @@ on: [push]
 
 name: 'Build Windows'
 
+permissions:
+  contents: write
+
 jobs:
   upload-release:
 
