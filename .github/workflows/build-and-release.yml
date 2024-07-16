@@ -57,4 +57,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: uploads
-        path: qemu-x86_64-pc-windows-gnu.exe
+        path: ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
