@@ -1,7 +1,7 @@
 on: [push]
 
 name: 'Build Windows'
-description: 'Build QEMU for Windows x86_64'
+
 jobs:
   build_windows:
     runs-on: ubuntu-latest
