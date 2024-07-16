@@ -1,0 +1,60 @@
+on: [push]
+
+name: 'Build Windows'
+
+jobs:
+  upload-release:
+
+    runs-on: ubuntu-18.04
+    needs: [build-windows-x86-64]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: create release
+      id: create_release
+      uses: actions/create-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false   
+    - name: download artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: uploads    
+    - name: upload windows
+      id: upload-windows
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./uploads/qemu-x86_64-pc-windows-gnu.exe
+        asset_name: qemu-x86_64-pc-windows-gnu.exe
+        asset_content_type: application/octet-stream 
+
+  build-windows-x86-64:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image for x86_64
+      run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows .
+
+    - name: Run Docker container with volume mount
+      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-windows-x86-64
+
+    - name: upload windows artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: uploads
+        path: qemu-x86_64-pc-windows-gnu.exe
