@@ -1,0 +1,20 @@
+on: [push]
+
+name: 'Build Windows'
+description: 'Build QEMU for Windows x86_64'
+jobs:
+  build_windows:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image for x86_64
+      run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows .
+
+    - name: Run Docker container with volume mount
+      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src my-docker-image
