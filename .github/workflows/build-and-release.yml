@@ -15,7 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: create release
-      debug: true
       id: create_release
       uses: actions/create-release@master
       env:
