@@ -9,6 +9,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        submodules: 'true'
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -17,4 +19,4 @@ jobs:
       run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows .
 
     - name: Run Docker container with volume mount
-      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-windows-x86-64
+      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-windows-x86-64
