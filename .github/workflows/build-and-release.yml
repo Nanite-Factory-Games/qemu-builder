@@ -27,6 +27,8 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: uploads
+    - name: list-artifacts
+      run: pwd && ls ./uploads
     - name: upload windows x86-64
       id: upload-windows-x86-64
       uses: actions/upload-release-asset@v1.0.1
