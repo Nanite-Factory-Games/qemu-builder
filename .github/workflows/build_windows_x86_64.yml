@@ -17,4 +17,4 @@ jobs:
       run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows .
 
     - name: Run Docker container with volume mount
-      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src my-docker-image
+      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-windows-x86-64
