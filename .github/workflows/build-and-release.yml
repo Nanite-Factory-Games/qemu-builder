@@ -1,6 +1,7 @@
 on: [push]
 
 name: 'Build Cross Platform'
+debug: true
 
 permissions:
   contents: write
