@@ -1,6 +1,6 @@
 on: [push]
 
-name: 'Build Windows'
+name: 'Build Cross Platform'
 
 permissions:
   contents: write
@@ -9,7 +9,7 @@ jobs:
   upload-release:
 
     runs-on: ubuntu-latest
-    needs: [build-windows-x86-64]
+    needs: [build-windows-x86-64, build-linux-x86-64]
 
     steps:
     - uses: actions/checkout@v1
@@ -26,9 +26,9 @@ jobs:
     - name: download artifacts
       uses: actions/download-artifact@v1
       with:
-        name: uploads    
-    - name: upload windows
-      id: upload-windows
+        name: uploads
+    - name: upload windows x86-64
+      id: upload-windows-x86-64
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,6 +36,16 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./uploads/qemu-x86_64-pc-windows-gnu.exe
         asset_name: qemu-x86_64-pc-windows-gnu.exe
+        asset_content_type: application/octet-stream 
+    - name: upload linux x86-64
+      id: upload-linux-x86-64
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./uploads/qemu-x86_64-unknown-linux-gnu
+        asset_name: qemu-x86_64-unknown-linux-gnu
         asset_content_type: application/octet-stream 
 
   build-windows-x86-64:
@@ -50,14 +60,44 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Build Docker image for x86_64
-      run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows .
+    - name: Create dummy binary
+      run: touch ./build/qemu-x86_64-pc-windows-gnu.exe
 
-    - name: Run Docker container with volume mount
-      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-windows-x86-64
+    # - name: Build Docker image for x86_64
+    #   run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows .
+
+    # - name: Run Docker container with volume mount
+    #   run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-windows-x86-64
 
     - name: upload windows artifact
       uses: actions/upload-artifact@v1
       with:
         name: uploads
         path: ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
+
+  build-linux-x86-64:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Create dummy binary
+      run: touch ./build/qemu-x86_64-unknown-linux-gnu
+
+    # - name: Build Docker image for x86_64
+    #   run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux .
+
+    # - name: Run Docker container with volume mount
+    #   run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-linux-x86-64
+
+    - name: upload linux artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: uploads
+        path: ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
