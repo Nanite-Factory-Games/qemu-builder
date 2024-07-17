@@ -30,7 +30,7 @@ jobs:
         name: uploads
         path: $GITHUB_WORKSPACE/uploads
     - name: list-artifacts
-      run: ls && pwd && ls ./uploads
+      run: ls ${{ github.workspace }} && pwd && ls ${{ github.workspace }}/uploads
     - name: upload windows x86-64
       id: upload-windows-x86-64
       uses: actions/upload-release-asset@v1.0.1
