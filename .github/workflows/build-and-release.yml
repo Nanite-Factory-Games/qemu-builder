@@ -116,7 +116,7 @@ jobs:
         submodules: 'true'
 
     - name: Build QEMU for macos
-      run: ,.build_macos.sh
+      run: .build_macos.sh
 
     # - name: Run Docker container with volume mount
     #   run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-linux-x86-64
