@@ -107,7 +107,7 @@ jobs:
   #       path: ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
 
   build-macos-x86-64:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
     - name: Checkout repository
