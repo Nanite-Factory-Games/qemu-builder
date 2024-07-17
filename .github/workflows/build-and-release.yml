@@ -13,7 +13,7 @@ jobs:
     needs: [build-windows-x86-64, build-linux-x86-64]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: create release
       id: create_release
       uses: actions/create-release@master
@@ -25,7 +25,7 @@ jobs:
         draft: false
         prerelease: false   
     - name: download artifacts
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v2
       with:
         name: uploads
     - name: list-artifacts
@@ -42,7 +42,7 @@ jobs:
         asset_content_type: application/octet-stream 
     - name: upload linux x86-64
       id: upload-linux-x86-64
-      uses: actions/upload-release-asset@v1.0.1
+      uses: actions/upload-release-asset@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -73,7 +73,7 @@ jobs:
     #   run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-windows-x86-64
 
     - name: upload windows artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: uploads
         path: ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
@@ -100,7 +100,7 @@ jobs:
     #   run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-linux-x86-64
 
     - name: upload linux artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: uploads
         path: ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
