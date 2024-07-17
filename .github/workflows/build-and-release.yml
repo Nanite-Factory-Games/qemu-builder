@@ -28,7 +28,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: uploads
-        path: $GITHUB_WORKSPACE/uploads
+        path: ${{ github.workspace }}/uploads
     - name: list-artifacts
       run: ls ${{ github.workspace }} && pwd && ls ${{ github.workspace }}/uploads
     - name: upload windows x86-64
