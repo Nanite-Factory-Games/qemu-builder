@@ -118,8 +118,8 @@ jobs:
     - name: Install ninja
       run: brew install ninja
 
-    - name: List bins
-      run: ls /usr/bin
+    - name: Link ar compiler
+      run: ln -s /usr/bin/ar /usr/local/bin/x86_64-apple-darwin-ar
 
     - name: Build QEMU for macos
       run: ./build_macos.sh
