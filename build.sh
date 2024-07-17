@@ -1,3 +1,4 @@
+set -ex
 rm -rf ./build
 # # Build Linux
 # docker build -t qemu-builder-linux -f Dockerfile_linux .
