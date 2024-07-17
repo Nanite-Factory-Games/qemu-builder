@@ -33,7 +33,7 @@ jobs:
       run: ls ${{ github.workspace }} && pwd && ls ${{ github.workspace }}/uploads
     - name: upload windows x86-64
       id: upload-windows-x86-64
-      uses: actions/upload-release-asset@v1.0.1
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -43,7 +43,7 @@ jobs:
         asset_content_type: application/octet-stream 
     - name: upload linux x86-64
       id: upload-linux-x86-64
-      uses: actions/upload-release-asset@v1.0.1
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
