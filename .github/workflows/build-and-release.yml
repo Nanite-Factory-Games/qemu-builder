@@ -118,8 +118,8 @@ jobs:
     - name: Install ninja
       run: brew install ninja
 
-    - name: Install Xcode
-      run: xcode-select --install
+    - name: List bins
+      run: ls /usr/bin
 
     - name: Build QEMU for macos
       run: ./build_macos.sh
