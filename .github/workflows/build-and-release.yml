@@ -122,7 +122,7 @@ jobs:
       run: ./build_macos.sh
 
     - name: List outputs
-      run: ls ./build
+      run: ls ./qemu/build
 
     # - name: Run Docker container with volume mount
     #   run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-linux-x86-64
