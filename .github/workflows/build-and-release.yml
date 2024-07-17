@@ -115,6 +115,9 @@ jobs:
       with:
         submodules: 'true'
 
+    - name: Install ninja
+      run: brew install ninja
+
     - name: Build QEMU for macos
       run: ./build_macos.sh
 
