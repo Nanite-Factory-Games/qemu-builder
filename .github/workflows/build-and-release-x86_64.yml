@@ -1,6 +1,6 @@
 on: [push]
 
-name: 'Build Cross Platform'
+name: 'Build Cross Platform x86_64'
 
 
 permissions:
@@ -85,16 +85,48 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Build Docker image for x86_64
-      run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows .
+      run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .
 
     - name: Run Docker container with volume mount
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-windows-x86-64
+
+    - name: Rename output binary
+      run: mv ./build/qemu-system-x86_64.exe /mnt/build/qemu-x86_64-pc-windows-gnu.exe
 
     - name: upload windows artifact
       uses: actions/upload-artifact@v2
       with:
         name: uploads
         path: ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
+        if-no-files-found: error
+
+  build-windows-aarch64:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image for aarch64
+      run: docker build -t build-windows-aarch64 -f ./Dockerfile_windows_aarch64 .
+
+    - name: Run Docker container with volume mount
+      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-windows-aarch64
+
+    - name: Rename output binary
+      run: mv ./build/qemu-system-x86_64.exe /mnt/build/qemu-aarch64-pc-windows-gnu.exe
+
+    - name: upload windows artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: uploads
+        path: ${{ github.workspace }}/build/qemu-aarch64-pc-windows-gnu.exe
+        if-no-files-found: error
 
   build-linux-x86-64:
     runs-on: ubuntu-latest
@@ -114,11 +146,15 @@ jobs:
     - name: Run Docker container with volume mount
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src -v $(realpath ./build):/mnt/build build-linux-x86-64
 
+    - name: Rename output binary
+      run: mv ./build/qemu-system-x86_64 /mnt/build/qemu-x86_64-unknown-linux-gnu
+
     - name: upload linux artifact
       uses: actions/upload-artifact@v2
       with:
         name: uploads
         path: ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
+        if-no-files-found: error
 
   build-macos-x86-64:
     runs-on: macos-13
@@ -135,11 +171,15 @@ jobs:
     - name: Build QEMU for macos
       run: ./build_macos.sh
 
+    - name: Rename output binary
+      run: mv ./build/qemu-system-x86_64 /mnt/build/qemu-x86_64-apple-darwin
+
     - name: upload macos x86_64 artifact
       uses: actions/upload-artifact@v2
       with:
         name: uploads
         path: ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
+        if-no-files-found: error
 
   build-macos-aarch64:
     runs-on: macos-14
@@ -156,8 +196,12 @@ jobs:
     - name: Build QEMU for macos
       run: ./build_macos.sh
 
+    - name: Rename output binary
+      run: mv ./build/qemu-system-x86_64 /mnt/build/qemu-aarch64-apple-darwin
+
     - name: upload macos aarch64 artifact
       uses: actions/upload-artifact@v2
       with:
         name: uploads
         path: ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
+        if-no-files-found: error

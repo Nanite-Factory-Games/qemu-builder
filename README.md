@@ -1,4 +1,6 @@
 # QEMU Builder
+This builder is meant to generate qemu statically linked binaries for the
+6 most common platforms to run x86_64(and soon aarch64 as well).
 
 ## Build all
 To attempt to build all platforms, run `./build.sh`.

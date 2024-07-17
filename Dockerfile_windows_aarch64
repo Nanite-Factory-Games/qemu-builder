@@ -1,0 +1,90 @@
+FROM fedora:latest
+
+# Windows build deps
+RUN dnf install mingw64-pixman mingw64-glib2 mingw64-gmp mingw64-SDL2 mingw64-pkg-config -y
+RUN dnf install mingw64-gcc mingw64-gcc-objc ninja-build mingw64-python3 mingw64-python3-build -y
+RUN dnf install -y git make
+
+RUN dnf install -y mingw-binutils-generic.x86_64 
+RUN dnf install -y mingw-filesystem-base.noarch
+RUN dnf install -y mingw64-SDL2.noarch
+RUN dnf install -y mingw64-SDL_image.noarch
+RUN dnf install -y mingw64-angleproject.noarch
+RUN dnf install -y mingw64-binutils.x86_64
+RUN dnf install -y mingw64-bzip2.noarch
+RUN dnf install -y mingw64-cairo.noarch
+RUN dnf install -y mingw64-cpp.x86_64
+RUN dnf install -y mingw64-crt.noarch
+RUN dnf install -y mingw64-curl.noarch
+RUN dnf install -y mingw64-dbus.noarch
+RUN dnf install -y mingw64-dbus-glib.noarch
+RUN dnf install -y mingw64-dlfcn.noarch
+RUN dnf install -y mingw64-expat.noarch
+RUN dnf install -y mingw64-filesystem.noarch
+RUN dnf install -y mingw64-fontconfig.noarch
+RUN dnf install -y mingw64-freetype.noarch
+RUN dnf install -y mingw64-fribidi.noarch
+RUN dnf install -y mingw64-gcc.x86_64
+RUN dnf install -y mingw64-gcc-c++.x86_64
+RUN dnf install -y mingw64-gcc-objc.x86_64
+RUN dnf install -y mingw64-gcc-objc++.x86_64
+RUN dnf install -y mingw64-gettext.noarch
+RUN dnf install -y mingw64-glib2.noarch
+RUN dnf install -y mingw64-gmp.noarch
+RUN dnf install -y mingw64-gnutls.noarch
+RUN dnf install -y mingw64-gstreamer1.noarch
+RUN dnf install -y mingw64-gstreamer1-plugins-base.noarch
+RUN dnf install -y mingw64-harfbuzz.noarch
+RUN dnf install -y mingw64-headers.noarch
+RUN dnf install -y mingw64-icu.noarch
+RUN dnf install -y mingw64-json-glib.noarch
+RUN dnf install -y mingw64-libepoxy.noarch
+RUN dnf install -y mingw64-libffi.noarch
+RUN dnf install -y mingw64-libgcc.x86_64
+RUN dnf install -y mingw64-libidn2.noarch
+RUN dnf install -y mingw64-libjpeg-turbo.noarch
+RUN dnf install -y mingw64-libogg.noarch
+RUN dnf install -y mingw64-libpng.noarch
+RUN dnf install -y mingw64-libssh2.noarch
+RUN dnf install -y mingw64-libstdc++.x86_64
+RUN dnf install -y mingw64-libtasn1.noarch
+RUN dnf install -y mingw64-libtheora.noarch
+RUN dnf install -y mingw64-libtiff.noarch
+RUN dnf install -y mingw64-libusbx.noarch
+RUN dnf install -y mingw64-libvirt.noarch
+RUN dnf install -y mingw64-libvirt-glib.noarch
+RUN dnf install -y mingw64-libvorbis.noarch
+RUN dnf install -y mingw64-libxml2.noarch
+RUN dnf install -y mingw64-nettle.noarch
+RUN dnf install -y mingw64-openssl.noarch
+RUN dnf install -y mingw64-opus.noarch
+RUN dnf install -y mingw64-orc.noarch
+RUN dnf install -y mingw64-p11-kit.noarch
+RUN dnf install -y mingw64-pango.noarch
+RUN dnf install -y mingw64-pcre2.noarch
+RUN dnf install -y mingw64-pixman.noarch
+RUN dnf install -y mingw64-portablexdr.noarch
+RUN dnf install -y mingw64-sdl12-compat.noarch
+RUN dnf install -y mingw64-spice-glib.noarch
+RUN dnf install -y mingw64-spice-protocol.noarch
+RUN dnf install -y mingw64-spirv-tools.noarch
+RUN dnf install -y mingw64-termcap.noarch
+RUN dnf install -y mingw64-usbredir.noarch
+RUN dnf install -y mingw64-vkd3d.noarch
+RUN dnf install -y mingw64-vulkan-utility-libraries.noarch
+RUN dnf install -y mingw64-vulkan-validation-layers.noarch
+RUN dnf install -y mingw64-win-iconv.noarch
+RUN dnf install -y mingw64-windows-default-manifest.noarch
+RUN dnf install -y mingw64-winpthreads.noarch
+RUN dnf install -y mingw64-winpthreads-static.noarch
+RUN dnf install -y mingw64-zlib.noarch
+RUN dnf install -y mingw64-zstd.noarch
+
+# Linux build deps
+RUN dnf install -y dnf-plugins-core
+RUN dnf builddep -y qemu
+
+WORKDIR /
+COPY build_windows.sh /build_windows.sh
+
+CMD "/build_windows.sh aarch64-w64-mingw32-"
