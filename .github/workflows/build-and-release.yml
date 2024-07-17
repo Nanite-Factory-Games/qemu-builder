@@ -30,7 +30,7 @@ jobs:
         name: uploads
         path: ${{ github.workspace }}/uploads
     - name: list-artifacts
-      run: ls ${{ github.workspace }} && pwd && ls ${{ github.workspace }}/uploads
+      run: ls ${{ github.workspace }} && pwd && ls ${{ github.workspace }}/uploads && stat /home/runner/work/qemu-builder/qemu-builder/uploads/qemu-x86_64-pc-windows-gnu.exe
     - name: upload windows x86-64
       id: upload-windows-x86-64
       uses: actions/upload-release-asset@v1
