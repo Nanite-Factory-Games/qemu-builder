@@ -87,4 +87,4 @@ RUN dnf builddep -y qemu
 WORKDIR /
 COPY build_windows.sh /build_windows.sh
 
-CMD "/build_windows.sh aarch64-w64-mingw32-"
+CMD ["/build_windows.sh", "aarch64-w64-mingw32-"]
