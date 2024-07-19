@@ -91,7 +91,7 @@ jobs:
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-windows-x86-64
 
     - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv {{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
+      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
 
     - name: upload windows artifact
       uses: actions/upload-artifact@v2
@@ -119,7 +119,7 @@ jobs:
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-windows-aarch64
 
     - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv {{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-aarch64-pc-windows-gnu.exe
+      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-aarch64-pc-windows-gnu.exe
 
     - name: upload windows artifact
       uses: actions/upload-artifact@v2
@@ -147,7 +147,7 @@ jobs:
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-linux-x86-64
 
     - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv {{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
+      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
 
     - name: upload linux artifact
       uses: actions/upload-artifact@v2
@@ -172,7 +172,7 @@ jobs:
       run: ./build_macos.sh
 
     - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv {{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
+      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
 
     - name: upload macos x86_64 artifact
       uses: actions/upload-artifact@v2
@@ -197,7 +197,7 @@ jobs:
       run: ./build_macos.sh
 
     - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv {{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
+      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
 
     - name: upload macos aarch64 artifact
       uses: actions/upload-artifact@v2
