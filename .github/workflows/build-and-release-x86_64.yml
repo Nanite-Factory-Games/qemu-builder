@@ -10,7 +10,7 @@ jobs:
   upload-release:
 
     runs-on: ubuntu-latest
-    needs: [build-linux-x86-64, build-macos-x86-64, build-macos-aarch64]
+    needs: [build-linux-x86-64]
 
     steps:
     - uses: actions/checkout@v2
@@ -147,7 +147,7 @@ jobs:
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-linux-x86-64
 
     - name: Rename output binary
-      run: ls ${{ github.workspace }} && ls ${{ github.workspace }}/qemu/build && mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
+      run: mkdir ${{ github.workspace }}/build && ls ${{ github.workspace }} && ls ${{ github.workspace }}/qemu/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
 
     - name: upload linux artifact
       uses: actions/upload-artifact@v2
@@ -156,52 +156,52 @@ jobs:
         path: ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
         if-no-files-found: error
 
-  build-macos-x86-64:
-    runs-on: macos-13
+  # build-macos-x86-64:
+  #   runs-on: macos-13
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        submodules: 'true'
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v2
+  #     with:
+  #       submodules: 'true'
 
-    - name: Install ninja
-      run: brew install ninja
+  #   - name: Install ninja
+  #     run: brew install ninja
 
-    - name: Build QEMU for macos
-      run: ./build_macos.sh
+  #   - name: Build QEMU for macos
+  #     run: ./build_macos.sh
 
-    - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
+  #   - name: Rename output binary
+  #     run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
 
-    - name: upload macos x86_64 artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: uploads
-        path: ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
-        if-no-files-found: error
+  #   - name: upload macos x86_64 artifact
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: uploads
+  #       path: ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
+  #       if-no-files-found: error
 
-  build-macos-aarch64:
-    runs-on: macos-14
+  # build-macos-aarch64:
+  #   runs-on: macos-14
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        submodules: 'true'
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v2
+  #     with:
+  #       submodules: 'true'
 
-    - name: Install ninja
-      run: brew install ninja
+  #   - name: Install ninja
+  #     run: brew install ninja
 
-    - name: Build QEMU for macos
-      run: ./build_macos.sh
+  #   - name: Build QEMU for macos
+  #     run: ./build_macos.sh
 
-    - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
+  #   - name: Rename output binary
+  #     run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
 
-    - name: upload macos aarch64 artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: uploads
-        path: ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
-        if-no-files-found: error
+  #   - name: upload macos aarch64 artifact
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: uploads
+  #       path: ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
+  #       if-no-files-found: error
