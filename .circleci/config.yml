@@ -1,19 +1,44 @@
+jobs:
+    build-linux-aarch64:
+        machine:
+            image: ubuntu-2204:2023.07.1
+            resource_class: arm.medium
+        steps:
+            - checkout
+            - run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
+            - run: docker run -v ./qemu:/mnt/src build-linux-aarch64
+    build-linux-x86_64:
+        machine:
+            image: ubuntu-2204:2023.07.1
+        steps:
+            - checkout
+            - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
+            - run: docker run -v ./qemu:/mnt/src build-linux-x86-64
+    build-macos:
+        macos:
+            xcode: 12.3.0
+        steps:
+            - checkout
+            - run: echo "Building on macOS"
+    build-windows-aarch64:
+        machine:
+            image: windows-server-2019
+        steps:
+            - checkout
+            - run: echo "Building on Windows x86_64"
+    build-windows-x86_64:
+        machine:
+            image: windows-server-2019
+        steps:
+            - checkout
+            - run: echo "Building on Windows x86_64"
 version: 2.1
-
-setup: true
-
 workflows:
-  version: 2
-  build-and-test:
-    jobs:
-      - build-linux-x86_64
-      - build-linux-aarch64
-      - build-macos-x86_64
-      - build-macos-aarch64
-      - build-windows-x86_64
-      - build-windows-aarch64
+    build-crossplatform:
+        jobs:
+            - build-linux-aarch64
+            - build-linux-x86_64
+            - build-macos
+            - build-windows-aarch64
+            - build-windows-x86_64
 
-import:
-  - jobs/linux.yml
-  - jobs/macos.yml
-  - jobs/windows.yml

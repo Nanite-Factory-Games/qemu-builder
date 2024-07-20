@@ -1,0 +1,6 @@
+macos:
+  xcode: 12.3.0
+steps:
+  - checkout
+  - run: echo "Building on macOS"
+  # Add your build steps here
