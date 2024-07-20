@@ -29,7 +29,7 @@ jobs:
         path: ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
         if-no-files-found: error
 
-  build-linux-x86-64:
+  build-linux-aarch64:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,11 +41,11 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Build Docker image for x86_64
-      run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
+    - name: Build Docker image for aarch64
+      run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
 
     - name: Run Docker container with volume mount
-      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-linux-x86-64
+      run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-linux-aarch64
 
     - name: Rename output binary
       run: mkdir ${{ github.workspace }}/build && ls ${{ github.workspace }} && ls ${{ github.workspace }}/qemu/build && sudo mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
@@ -54,5 +54,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: uploads
-        path: ${{ github.workspace }}/build/qemu-x86_64-unknown-linux-gnu
+        path: ${{ github.workspace }}/build/qemu-aarch64-unknown-linux-gnu
         if-no-files-found: error
