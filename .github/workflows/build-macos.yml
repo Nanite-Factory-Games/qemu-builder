@@ -1,5 +1,8 @@
 name: 'Build Macos x86_64 and aarch64'
 
+on:
+  workflow_call:
+
 jobs:
 # Macos-13 was the last x86 github runner so we need it to compile on
   build-macos-x86-64:
