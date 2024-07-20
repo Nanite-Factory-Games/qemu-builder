@@ -1,6 +1,11 @@
 machine:
-  image: windows-server-2019
+  image: ubuntu-2204:2024.05.1
 steps:
   - checkout
   - run: echo "Building on Windows x86_64"
-  # Add your build steps here
+  
+  # Build Docker image for x86_x64
+  - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .
+
+  # Run Docker container with volume mount
+  - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
