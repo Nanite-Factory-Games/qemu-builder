@@ -1,0 +1,56 @@
+on: [push]
+
+name: 'Build Macos x86_64 and aarch64'
+
+jobs:
+# Macos-13 was the last x86 github runner so we need it to compile on
+  build-macos-x86-64:
+    runs-on: macos-13
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+
+    - name: Install ninja
+      run: brew install ninja
+
+    - name: Build QEMU for macos
+      run: ./build_macos.sh
+
+    - name: Rename output binary
+      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
+
+    - name: upload macos x86_64 artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: uploads
+        path: ${{ github.workspace }}/build/qemu-x86_64-apple-darwin
+        if-no-files-found: error
+  # Macos 14 is the oldest aarch64 available,
+  # so we use it to support more devices
+  build-macos-aarch64:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+
+    - name: Install ninja
+      run: brew install ninja
+
+    - name: Build QEMU for macos
+      run: ./build_macos.sh
+
+    - name: Rename output binary
+      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64 ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
+
+    - name: upload macos aarch64 artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: uploads
+        path: ${{ github.workspace }}/build/qemu-aarch64-apple-darwin
+        if-no-files-found: error
