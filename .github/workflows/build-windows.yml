@@ -1,5 +1,3 @@
-on: [push]
-
 name: 'Build Windows x86_64 and aarch64'
 
 jobs:
@@ -22,7 +20,7 @@ jobs:
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-windows-x86-64
 
     - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
+      run: mkdir ${{ github.workspace }}/build && sudo mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-x86_64-pc-windows-gnu.exe
 
     - name: upload windows artifact
       uses: actions/upload-artifact@v2
@@ -50,7 +48,7 @@ jobs:
       run: docker run -v ${{ github.workspace }}/qemu:/mnt/src build-windows-aarch64
 
     - name: Rename output binary
-      run: mkdir ${{ github.workspace }}/build && mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-aarch64-pc-windows-gnu.exe
+      run: mkdir ${{ github.workspace }}/build && sudo mv ${{ github.workspace }}/qemu/build/qemu-system-x86_64.exe ${{ github.workspace }}/build/qemu-aarch64-pc-windows-gnu.exe
 
     - name: upload windows artifact
       uses: actions/upload-artifact@v2

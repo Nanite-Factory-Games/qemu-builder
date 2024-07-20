@@ -1,5 +1,3 @@
-on: [push]
-
 name: 'Build Macos x86_64 and aarch64'
 
 jobs:
