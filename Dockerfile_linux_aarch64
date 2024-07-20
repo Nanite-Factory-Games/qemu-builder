@@ -2,10 +2,9 @@ FROM fedora:latest
 
 RUN dnf install -y git make
 RUN dnf install -y dnf-plugins-core
-RUN dnf install -y gcc-aarch64-linux-gnu
 RUN dnf builddep -y qemu
 
 WORKDIR /
-COPY build_linux_aarch64.sh /build_linux.sh
+COPY build_linux.sh /build_linux.sh
 
 CMD "/build_linux.sh"
