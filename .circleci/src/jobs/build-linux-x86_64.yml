@@ -1,5 +1,5 @@
 machine:
-  image: ubuntu-2204:2023.07.1
+  image: ubuntu-2204:2024.05.1
 
 steps:
   - checkout
@@ -8,4 +8,4 @@ steps:
   - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
 
   # Run Docker container with volume mount
-  - run: docker run -v ./qemu:/mnt/src build-linux-x86-64
+  - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64

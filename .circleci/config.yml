@@ -6,14 +6,14 @@ jobs:
         steps:
             - checkout
             - run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
-            - run: docker run -v ./qemu:/mnt/src build-linux-aarch64
+            - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
     build-linux-x86_64:
         machine:
-            image: ubuntu-2204:2023.07.1
+            image: ubuntu-2204:2024.05.1
         steps:
             - checkout
             - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
-            - run: docker run -v ./qemu:/mnt/src build-linux-x86-64
+            - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64
     build-macos:
         macos:
             xcode: 12.3.0

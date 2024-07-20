@@ -8,4 +8,4 @@ steps:
   - run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
 
   # Run Docker container with volume mount
-  - run: docker run -v ./qemu:/mnt/src build-linux-aarch64
+  - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
