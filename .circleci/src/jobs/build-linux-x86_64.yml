@@ -3,6 +3,8 @@ machine:
 
 steps:
   - checkout
+  - run: git submodule sync
+  - run: git submodule update --init
 
   # Build Docker image for x86_64
   - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .

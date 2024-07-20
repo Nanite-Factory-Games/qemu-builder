@@ -2,6 +2,9 @@ macos:
   xcode: 12.3.0
 steps:
   - checkout
+  - run: git submodule sync
+  - run: git submodule update --init
+
   # Install ninja
   - run: brew install ninja
   - run: ./build_macos.sh

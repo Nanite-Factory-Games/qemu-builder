@@ -2,7 +2,8 @@ machine:
   image: ubuntu-2204:2024.05.1
 steps:
   - checkout
-  - run: echo "Building on Windows x86_64"
+  - run: git submodule sync
+  - run: git submodule update --init
   
   # Build Docker image for x86_x64
   - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .

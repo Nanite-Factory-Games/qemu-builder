@@ -3,6 +3,8 @@ machine:
   resource_class: arm.medium
 steps:
   - checkout
+  - run: git submodule sync
+  - run: git submodule update --init
 
   # Build Docker image for aarch64
   - run: docker build -t build-windows-aarch64 -f ./Dockerfile_windows_aarch64 .
