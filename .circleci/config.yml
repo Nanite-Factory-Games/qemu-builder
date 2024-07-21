@@ -11,7 +11,7 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
             - store_artifacts:
                 destination: qemu-aarch64-unknown-linux-gnu
-                path: build/qemu-aarch64-unknown-linux-gnu
+                path: qemu/build/qemu-system-x86_64
     build-linux-x86_64:
         machine:
             image: ubuntu-2204:2024.05.1
@@ -23,7 +23,7 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64
             - store_artifacts:
                 destination: qemu-x86_64-unknown-linux-gnu
-                path: build/qemu-x86_64-unknown-linux-gnu
+                path: qemu/build/qemu-system-x86_64
     build-macos:
         macos:
             xcode: 14.2.0
@@ -36,7 +36,7 @@ jobs:
             - run: ./build_macos.sh
             - store_artifacts:
                 destination: qemu-universal-apple-darwin
-                path: build/qemu-universal-apple-darwin
+                path: qemu/build/qemu-system-x86_64
     build-windows-aarch64:
         machine:
             image: ubuntu-2204:2024.05.1
@@ -49,7 +49,7 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-aarch64
             - store_artifacts:
                 destination: qemu-windows-aarch64-pc-windows-gnu.exe
-                path: build/qemu-windows-aarch64-pc-windows-gnu.exe
+                path: qemu/build/qemu-system-x86_64.exe
     build-windows-x86_64:
         machine:
             image: ubuntu-2204:2024.05.1
@@ -60,8 +60,8 @@ jobs:
             - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
             - store_artifacts:
-                destination: qemu-windows-x86_64-pc-windows-gnu.exe
-                path: build/qemu-windows-x86_64-pc-windows-gnu.exe
+                destination: qemu-windows-aarch64-pc-windows-gnu.exe
+                path: qemu/build/qemu-system-x86_64.exe
 version: 2.1
 workflows:
     build-crossplatform:

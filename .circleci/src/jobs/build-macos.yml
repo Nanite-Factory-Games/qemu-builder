@@ -12,5 +12,5 @@ steps:
   - run: ./build_macos.sh
 
   - store_artifacts:
-      path: build/qemu-universal-apple-darwin
+      path: qemu/build/qemu-system-x86_64
       destination: qemu-universal-apple-darwin
