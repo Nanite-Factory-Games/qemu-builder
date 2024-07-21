@@ -12,5 +12,5 @@ steps:
   - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
 
   - store_artifacts:
-      path: qemu/build/qemu-system-x86_64.exe
+      path: qemu/build/qemu-system-x86_64
       destination: qemu-windows-aarch64-pc-windows-gnu.exe

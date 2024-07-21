@@ -49,7 +49,7 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-aarch64
             - store_artifacts:
                 destination: qemu-windows-aarch64-pc-windows-gnu.exe
-                path: qemu/build/qemu-system-x86_64.exe
+                path: qemu/build/qemu-system-x86_64
     build-windows-x86_64:
         machine:
             image: ubuntu-2204:2024.05.1
@@ -61,7 +61,7 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
             - store_artifacts:
                 destination: qemu-windows-aarch64-pc-windows-gnu.exe
-                path: qemu/build/qemu-system-x86_64.exe
+                path: qemu/build/qemu-system-x86_64
 version: 2.1
 workflows:
     build-crossplatform:
