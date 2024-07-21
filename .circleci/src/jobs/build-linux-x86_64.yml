@@ -11,3 +11,7 @@ steps:
 
   # Run Docker container with volume mount
   - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64
+
+  - store_artifacts:
+      path: build/qemu-x86_64-unknown-linux-gnu
+      destination: qemu-x86_64-unknown-linux-gnu

@@ -6,6 +6,11 @@ steps:
   - run: git submodule sync
   - run: git submodule update --init
 
-  # Install ninja
-  - run: brew install ninja
+  # Install dependencies
+  - run: brew install ninja glib
+
   - run: ./build_macos.sh
+
+  - store_artifacts:
+      path: build/qemu-universal-apple-darwin
+      destination: qemu-universal-apple-darwin
