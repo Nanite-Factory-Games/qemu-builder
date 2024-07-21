@@ -20,7 +20,8 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64
     build-macos:
         macos:
-            xcode: 12.3.0
+            xcode: 14.2.0
+        resource_class: macos.m1.medium.gen1
         steps:
             - checkout
             - run: git submodule sync
