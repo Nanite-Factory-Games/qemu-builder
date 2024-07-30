@@ -11,7 +11,9 @@ steps:
 
   # Run Docker container with volume mount
   - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-aarch64
+  
+  - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-aarch64-pc-windows-gnu.exe
 
-  - store_artifacts:
-      path: qemu/build/qemu-system-x86_64
+  - persist_to_workspace:
+      root: qemu/build
       destination: qemu-windows-aarch64-pc-windows-gnu.exe

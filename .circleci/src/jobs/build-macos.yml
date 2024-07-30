@@ -11,6 +11,8 @@ steps:
 
   - run: ./build_macos.sh
 
-  - store_artifacts:
-      path: qemu/build/qemu-system-x86_64
+  - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-universal-apple-darwin
+
+  - persist_to_workspace:
+      root: qemu/build
       destination: qemu-universal-apple-darwin
