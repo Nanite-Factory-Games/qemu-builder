@@ -4,7 +4,9 @@ jobs:
   # - build-macos
   # - build-windows-aarch64
   # - build-windows-x86_64
-  - publish-github-release
+  - publish-github-release:
+      context:
+        - "Shared Github"
       # requires:
       #   - build-linux-aarch64
       #   - build-linux-x86_64

@@ -88,5 +88,7 @@ version: 2.1
 workflows:
     build-crossplatform:
         jobs:
-            - publish-github-release
+            - publish-github-release:
+                context:
+                    - Shared Github
 
