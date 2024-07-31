@@ -7,4 +7,4 @@ steps:
       name: "Release binaries"
       command: |
         VERSION=9.0.1
-        echo "${GITHUB_TOKEN}"
+        echo "token: ${GITHUB_TOKEN}"
