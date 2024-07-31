@@ -11,7 +11,8 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
             - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-aarch64-unknown-linux-gnu
             - persist_to_workspace:
-                destination: qemu-aarch64-unknown-linux-gnu
+                paths:
+                    - qemu-aarch64-unknown-linux-gnu
                 root: qemu/build
     build-linux-x86_64:
         machine:
@@ -24,7 +25,8 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64
             - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-x86_64-unknown-linux-gnu
             - persist_to_workspace:
-                destination: qemu-x86_64-unknown-linux-gnu
+                paths:
+                    - qemu-x86_64-unknown-linux-gnu
                 root: qemu/build
     build-macos:
         macos:
@@ -38,7 +40,8 @@ jobs:
             - run: ./build_macos.sh
             - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-universal-apple-darwin
             - persist_to_workspace:
-                destination: qemu-universal-apple-darwin
+                paths:
+                    - qemu-universal-apple-darwin
                 root: qemu/build
     build-windows-aarch64:
         machine:
@@ -52,7 +55,8 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-aarch64
             - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-aarch64-pc-windows-gnu.exe
             - persist_to_workspace:
-                destination: qemu-windows-aarch64-pc-windows-gnu.exe
+                paths:
+                    - qemu-windows-aarch64-pc-windows-gnu.exe
                 root: qemu/build
     build-windows-x86_64:
         machine:
@@ -65,7 +69,8 @@ jobs:
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
             - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-x86_64-pc-windows-gnu.exe
             - persist_to_workspace:
-                destination: qemu-windows-x86_64-pc-windows-gnu.exe
+                paths:
+                    - qemu-windows-x86_64-pc-windows-gnu.exe
                 root: qemu/build
     publish-github-release:
         docker:

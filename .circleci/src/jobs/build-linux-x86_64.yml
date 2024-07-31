@@ -16,4 +16,5 @@ steps:
 
   - persist_to_workspace:
       root: qemu/build
-      destination: qemu-x86_64-unknown-linux-gnu
+      paths:
+        - qemu-x86_64-unknown-linux-gnu

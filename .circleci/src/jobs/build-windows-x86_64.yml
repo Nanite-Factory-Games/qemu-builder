@@ -15,4 +15,5 @@ steps:
 
   - persist_to_workspace:
       root: qemu/build
-      destination: qemu-windows-x86_64-pc-windows-gnu.exe
+      paths:
+        - qemu-windows-x86_64-pc-windows-gnu.exe

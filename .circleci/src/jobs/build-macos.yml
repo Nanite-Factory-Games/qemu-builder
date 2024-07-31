@@ -15,4 +15,5 @@ steps:
 
   - persist_to_workspace:
       root: qemu/build
-      destination: qemu-universal-apple-darwin
+      paths:
+        - qemu-universal-apple-darwin
