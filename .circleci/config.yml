@@ -82,22 +82,12 @@ jobs:
             - run:
                 command: |
                     VERSION=9.0.1
+                    echo "${GITHUB_TOKEN}"
                     ghr -t "${GITHUB_TOKEN}" -u "${CIRCLE_PROJECT_USERNAME}" -r "${CIRCLE_PROJECT_REPONAME}" -c "${CIRCLE_SHA1}" -delete "${VERSION}" ./workspace/
                 name: Release binaries
 version: 2.1
 workflows:
     build-crossplatform:
         jobs:
-            - build-linux-aarch64
-            - build-linux-x86_64
-            - build-macos
-            - build-windows-aarch64
-            - build-windows-x86_64
-            - publish-github-release:
-                requires:
-                    - build-linux-aarch64
-                    - build-linux-x86_64
-                    - build-macos
-                    - build-windows-aarch64
-                    - build-windows-x86_64
+            - publish-github-release
 
