@@ -12,9 +12,7 @@ steps:
   # Run Docker container with volume mount
   - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
 
-  - run: sudo chown $USER qemu/build/qemu-system-x86_64
-
-  - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-aarch64-unknown-linux-gnu
+  - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-aarch64-unknown-linux-gnu
 
   - persist_to_workspace:
       root: qemu/build

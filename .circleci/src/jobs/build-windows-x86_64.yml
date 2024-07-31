@@ -11,9 +11,7 @@ steps:
   # Run Docker container with volume mount
   - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
 
-  - run: sudo chown $USER qemu/build/qemu-system-x86_64
-
-  - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-x86_64-pc-windows-gnu.exe
+  - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-x86_64-pc-windows-gnu.exe
 
   - persist_to_workspace:
       root: qemu/build
