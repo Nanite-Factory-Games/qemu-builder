@@ -9,7 +9,7 @@ jobs:
             - run: git submodule update --init
             - run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
             - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
-            - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-aarch64-unknown-linux-gnu
+            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-aarch64-unknown-linux-gnu
             - persist_to_workspace:
                 paths:
                     - qemu-aarch64-unknown-linux-gnu
@@ -23,7 +23,8 @@ jobs:
             - run: git submodule update --init
             - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
             - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64
-            - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-x86_64-unknown-linux-gnu
+            - run: sudo chown $USER qemu/build/qemu-system-x86_64
+            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-x86_64-unknown-linux-gnu
             - persist_to_workspace:
                 paths:
                     - qemu-x86_64-unknown-linux-gnu
@@ -53,7 +54,7 @@ jobs:
             - run: git submodule update --init
             - run: docker build -t build-windows-aarch64 -f ./Dockerfile_windows_aarch64 .
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-aarch64
-            - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-aarch64-pc-windows-gnu.exe
+            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-aarch64-pc-windows-gnu.exe
             - persist_to_workspace:
                 paths:
                     - qemu-windows-aarch64-pc-windows-gnu.exe
@@ -67,7 +68,7 @@ jobs:
             - run: git submodule update --init
             - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .
             - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
-            - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-x86_64-pc-windows-gnu.exe
+            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-x86_64-pc-windows-gnu.exe
             - persist_to_workspace:
                 paths:
                     - qemu-windows-x86_64-pc-windows-gnu.exe
