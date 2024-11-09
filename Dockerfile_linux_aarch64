@@ -1,10 +1,31 @@
-FROM fedora:latest
+FROM arm64v8/ubuntu:18.04
 
-RUN dnf install -y git make
-RUN dnf install -y dnf-plugins-core
-RUN dnf builddep -y qemu
+RUN apt-get update
+RUN apt-get install -y git make pkg-config ninja-build diffutils bzip2 wget
+
+RUN git clone -b stable-8.2 https://github.com/qemu/qemu.git
+
+RUN apt-get -y install glib-2.0
+RUN apt-get -y install libglib2.0-0 libglib2.0-dev
+RUN apt-get -y install libfdt1 libfdt-dev
+RUN apt-get -y install binutils binutils-dev
+RUN apt-get -y install zlibc
+
+RUN apt-get -y install python3.8 python3.8-dev python3.8-distutils python3.8-venv python3-pip
+RUN python3 -m pip install --upgrade pip
+RUN python3.8 -m pip install distlib tomli urllib3 meson
+
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN apt-get update
+RUN apt-get install -y gcc-10 g++-10
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+RUN apt install -y linux-headers-generic
+
 
 WORKDIR /
-COPY build_linux.sh /build_linux.sh
+COPY build_linux_aarch64.sh /build_linux.sh
+COPY hwcap-fix.patch /hwcap-fix.patch
 
-CMD "/build_linux.sh"
+CMD ["/build_linux.sh", "aarch64-softmmu", ""]

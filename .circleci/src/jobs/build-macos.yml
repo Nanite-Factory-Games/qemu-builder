@@ -3,8 +3,6 @@ macos:
 resource_class: macos.m1.medium.gen1
 steps:
   - checkout
-  - run: git submodule sync
-  - run: git submodule update --init
 
   # Install dependencies
   - run: brew install ninja glib

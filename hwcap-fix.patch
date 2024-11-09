@@ -1,0 +1,14 @@
+diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
+index 4c8a005715..071e094d08 100644
+--- a/util/cpuinfo-aarch64.c
++++ b/util/cpuinfo-aarch64.c
+@@ -16,6 +16,9 @@
+ # ifndef HWCAP2_BTI
+ #  define HWCAP2_BTI 0  /* added in glibc 2.32 */
+ # endif
++# ifndef HWCAP_USCAT
++# define HWCAP_USCAT (1 << 25)
++# endif
+ #endif
+ #ifdef CONFIG_DARWIN
+ # include <sys/sysctl.h>

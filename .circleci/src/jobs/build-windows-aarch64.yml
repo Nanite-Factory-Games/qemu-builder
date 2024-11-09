@@ -3,18 +3,14 @@ machine:
   resource_class: arm.medium
 steps:
   - checkout
-  - run: git submodule sync
-  - run: git submodule update --init
 
   # Build Docker image for aarch64
   - run: docker build -t build-windows-aarch64 -f ./Dockerfile_windows_aarch64 .
 
   # Run Docker container with volume mount
-  - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-aarch64
-
-  - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-aarch64-pc-windows-gnu.exe
+  - run: docker run -v $(realpath ./build):/mnt/build build-windows-aarch64
 
   - persist_to_workspace:
-      root: qemu/build
+      root: build
       paths:
-        - qemu-windows-aarch64-pc-windows-gnu.exe
+        - qemu(aarch64)-windows-aarch64-pc-windows-gnu.exe

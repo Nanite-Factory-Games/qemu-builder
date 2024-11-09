@@ -3,18 +3,16 @@ machine:
   resource_class: arm.medium
 steps:
   - checkout
-  - run: git submodule sync
-  - run: git submodule update --init
 
   # Build Docker image for x86_64
   - run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
 
   # Run Docker container with volume mount
-  - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
+  - run: docker run -v $(realpath ./build):/mnt/build build-linux-aarch64
 
-  - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-aarch64-unknown-linux-gnu
+  - run: sudo chown $USER /build/qemu(aarch64)-aarch64-unknown-linux-gnu
 
   - persist_to_workspace:
-      root: qemu/build
+      root: /build
       paths:
-        - qemu-aarch64-unknown-linux-gnu
+        - qemu(aarch64)-aarch64-unknown-linux-gnu

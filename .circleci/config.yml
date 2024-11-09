@@ -5,38 +5,31 @@ jobs:
             resource_class: arm.medium
         steps:
             - checkout
-            - run: git submodule sync
-            - run: git submodule update --init
             - run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
-            - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-aarch64
-            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-aarch64-unknown-linux-gnu
+            - run: docker run -v $(realpath ./build):/mnt/build build-linux-aarch64
+            - run: sudo chown $USER /build/qemu(aarch64)-aarch64-unknown-linux-gnu
             - persist_to_workspace:
                 paths:
-                    - qemu-aarch64-unknown-linux-gnu
-                root: qemu/build
+                    - qemu(aarch64)-aarch64-unknown-linux-gnu
+                root: /build
     build-linux-x86_64:
         machine:
             image: ubuntu-2204:2024.05.1
         steps:
             - checkout
-            - run: git submodule sync
-            - run: git submodule update --init
             - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
-            - run: docker run -v $(realpath ./qemu):/mnt/src build-linux-x86-64
-            - run: sudo chown $USER qemu/build/qemu-system-x86_64
-            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-x86_64-unknown-linux-gnu
+            - run: docker run -v $(realpath ./build):/mnt/build build-linux-x86-64
+            - run: sudo chown $USER /build/qemu(x86_64)-x86_64-unknown-linux-gnu
             - persist_to_workspace:
                 paths:
-                    - qemu-x86_64-unknown-linux-gnu
-                root: qemu/build
+                    - qemu(x86_64)-x86_64-unknown-linux-gnu
+                root: /build
     build-macos:
         macos:
             xcode: 14.2.0
         resource_class: macos.m1.medium.gen1
         steps:
             - checkout
-            - run: git submodule sync
-            - run: git submodule update --init
             - run: brew install ninja glib
             - run: ./build_macos.sh
             - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-universal-apple-darwin
@@ -50,29 +43,23 @@ jobs:
             resource_class: arm.medium
         steps:
             - checkout
-            - run: git submodule sync
-            - run: git submodule update --init
             - run: docker build -t build-windows-aarch64 -f ./Dockerfile_windows_aarch64 .
-            - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-aarch64
-            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-aarch64-pc-windows-gnu.exe
+            - run: docker run -v $(realpath ./build):/mnt/build build-windows-aarch64
             - persist_to_workspace:
                 paths:
-                    - qemu-windows-aarch64-pc-windows-gnu.exe
-                root: qemu/build
+                    - qemu(aarch64)-windows-aarch64-pc-windows-gnu.exe
+                root: build
     build-windows-x86_64:
         machine:
             image: ubuntu-2204:2024.05.1
         steps:
             - checkout
-            - run: git submodule sync
-            - run: git submodule update --init
             - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .
-            - run: docker run -v $(realpath ./qemu):/mnt/src build-windows-x86-64
-            - run: sudo mv qemu/build/qemu-system-x86_64 qemu/build/qemu-windows-x86_64-pc-windows-gnu.exe
+            - run: docker run -v $(realpath ./build):/mnt/build build-windows-x86-64
             - persist_to_workspace:
                 paths:
-                    - qemu-windows-x86_64-pc-windows-gnu.exe
-                root: qemu/build
+                    - qemu(x86_64)-windows-x86_64-pc-windows-gnu.exe
+                root: /build
     publish-github-release:
         docker:
             - image: cibuilds/github:0.10
@@ -81,7 +68,7 @@ jobs:
                 at: ./workspace
             - run:
                 command: |
-                    VERSION=9.0.1
+                    VERSION=8.2
                     echo "${GITHUB_TOKEN}"
                     ghr -t "${GITHUB_TOKEN}" -u "${CIRCLE_PROJECT_USERNAME}" -r "${CIRCLE_PROJECT_REPONAME}" -c "${CIRCLE_SHA1}" ./workspace/
                 name: Release binaries
@@ -89,10 +76,16 @@ version: 2.1
 workflows:
     build-crossplatform:
         jobs:
+            - build-linux-aarch64
             - build-linux-x86_64
+            - build-macos
+            - build-windows-x86_64
             - publish-github-release:
                 context:
                     - Shared Github
                 requires:
+                    - build-linux-aarch64
                     - build-linux-x86_64
+                    - build-macos
+                    - build-windows-x86_64
 
