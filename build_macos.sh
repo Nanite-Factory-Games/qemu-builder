@@ -18,7 +18,7 @@ cd ./qemu
 --disable-modules --disable-seccomp \
 --disable-debug-tcg --disable-tcg-interpreter --disable-mpath --disable-linux-aio \
 --disable-parallels --disable-qed --disable-vmdk \
---disable-cloop --disable-dmg --disable-vvfat --disable-rbd \
+--disable-cloop --disable-dmg --disable-rbd \
 --disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd 
 
 make -j$(sysctl -n hw.physicalcpu)

@@ -10,7 +10,7 @@ steps:
   # Run Docker container with volume mount
   - run: docker run -v $(realpath ./build):/mnt/build build-linux-aarch64
 
-  - run: sudo chown $USER /build/qemu(aarch64)-aarch64-unknown-linux-gnu
+  - run: sudo chown $USER /build/qemu\(aarch64\)-aarch64-unknown-linux-gnu
 
   - persist_to_workspace:
       root: /build
