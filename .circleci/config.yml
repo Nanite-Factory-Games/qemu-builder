@@ -1,7 +1,7 @@
 jobs:
     build-linux-aarch64:
         machine:
-            image: ubuntu-2204:2023.07.1
+            image: ubuntu-2404:2024.08.1
             resource_class: arm.medium
         steps:
             - checkout
@@ -14,7 +14,7 @@ jobs:
                 root: /build
     build-linux-x86_64:
         machine:
-            image: ubuntu-2204:2024.05.1
+            image: ubuntu-2404:2024.08.1
         steps:
             - checkout
             - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
@@ -39,7 +39,7 @@ jobs:
                 root: qemu/build
     build-windows-aarch64:
         machine:
-            image: ubuntu-2204:2024.05.1
+            image: ubuntu-2404:2024.08.1
             resource_class: arm.medium
         steps:
             - checkout
@@ -51,7 +51,7 @@ jobs:
                 root: build
     build-windows-x86_64:
         machine:
-            image: ubuntu-2204:2024.05.1
+            image: ubuntu-2404:2024.08.1
         steps:
             - checkout
             - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .

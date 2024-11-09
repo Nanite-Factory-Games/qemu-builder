@@ -5,7 +5,7 @@ git clone -b stable-8.2 https://github.com/qemu/qemu.git
 
 cd ./qemu
 
-./configure --target-list=x86_64-softmmu --without-default-features --static \
+./configure --target-list=x86_64-softmmu --without-default-features \
 --disable-gtk \
 --disable-tools --disable-docs \
 --disable-vnc --disable-sdl --disable-gtk --disable-opengl --disable-curses \
