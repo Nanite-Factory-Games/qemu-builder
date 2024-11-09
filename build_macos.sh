@@ -1,5 +1,8 @@
 #!/bin/bash
 set -ex
+
+git clone -b stable-8.2 https://github.com/qemu/qemu.git
+
 cd ./qemu
 
 ./configure --target-list=x86_64-softmmu --without-default-features --static \

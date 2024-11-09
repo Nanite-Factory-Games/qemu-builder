@@ -21,4 +21,4 @@ export LD_LIBRARY_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib
 # --disable-fdt
 make -j$(nproc)
 
-mv build/qemu-system-aarch64 /mnt/build/qemu(aarch64)-windows-aarch64-pc-windows-gnu.exe
+mv build/qemu-system-aarch64 /mnt/build/qemu\(aarch64\)-windows-aarch64-pc-windows-gnu.exe

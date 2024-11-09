@@ -8,7 +8,7 @@ export LD_LIBRARY_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib
 --disable-tools --disable-docs \
 --disable-vnc --disable-sdl --disable-gtk --disable-opengl --disable-curses \
 --disable-virtfs --disable-tpm --disable-libnfs --disable-curl \
---disable-vhost-net --disable-spice --disable-slirp --disable-pie --disable-gcrypt \
+--disable-vhost-net --disable-spice --disable-pie --disable-gcrypt \
 --disable-nettle --disable-libssh --disable-gnutls --disable-rdma \
 --disable-libusb --disable-usb-redir --disable-brlapi --disable-vde \
 --disable-smartcard --disable-xen --disable-glusterfs \
@@ -16,11 +16,11 @@ export LD_LIBRARY_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib
 --disable-modules --disable-seccomp \
 --disable-debug-tcg --disable-tcg-interpreter --disable-mpath --disable-linux-aio \
 --disable-parallels --disable-qed --disable-vmdk \
---disable-cloop --disable-dmg --disable-vvfat --disable-rbd \
+--disable-cloop --disable-dmg --disable-rbd \
 --disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd
 # Required for x86_64 targets
 # --disable-fdt
 make -j$(nproc)
 
-
-mv build/qemu-system-x86_64 /mnt/build/qemu(x86_64)-windows-x86_64-pc-windows-gnu.exe
+ls
+mv build/qemu-system-x86_64.exe /mnt/build/qemu\(x86_64\)-windows-x86_64-pc-windows-gnu.exe

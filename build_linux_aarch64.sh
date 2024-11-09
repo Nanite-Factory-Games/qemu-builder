@@ -31,4 +31,4 @@ git apply /hwcap-fix.patch
 make V=1 -j$(nproc)
 
 
-mv build/qemu-system-aarch64 /mnt/build/qemu(aarch64)-aarch64-unknown-linux-gnu
+mv build/qemu-system-aarch64 /mnt/build/qemu\(aarch64\)-aarch64-unknown-linux-gnu

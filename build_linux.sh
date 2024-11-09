@@ -26,4 +26,4 @@ CXX=g++-10
 # --disable-fdt
 make V=1 -j$(nproc)
 
-mv build/qemu-system-x86_64 /mnt/build/qemu(x86_64)-x86_64-unknown-linux-gnu
+mv build/qemu-system-x86_64 /mnt/build/qemu\(x86_64\)-x86_64-unknown-linux-gnu
