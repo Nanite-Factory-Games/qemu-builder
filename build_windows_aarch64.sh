@@ -16,7 +16,8 @@ export LD_LIBRARY_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib
 --disable-debug-tcg --disable-tcg-interpreter --disable-mpath --disable-linux-aio \
 --disable-parallels --disable-qed --disable-vmdk \
 --disable-cloop --disable-dmg --disable-rbd \
---disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd
+--disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd \
+--disable-guest-agent
 # Required for x86_64 targets
 # --disable-fdt
 make -j$(nproc)

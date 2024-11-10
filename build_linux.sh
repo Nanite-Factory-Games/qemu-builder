@@ -21,7 +21,8 @@ CXX=g++-10
 --disable-debug-tcg --disable-tcg-interpreter --disable-mpath --disable-linux-aio \
 --disable-parallels --disable-qed --disable-vmdk \
 --disable-cloop --disable-dmg --disable-rbd \
---disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd 
+--disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd \
+--disable-guest-agent 
 # Required for x86_64 targets
 # --disable-fdt
 make V=1 -j$(nproc)
