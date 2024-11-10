@@ -19,7 +19,7 @@ jobs:
             - checkout
             - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
             - run: docker run -v /build:/mnt/build build-linux-x86-64
-            - run: ls ./build && sudo chown $USER ./build/qemu\(x86_64\)-x86_64-unknown-linux-gnu
+            - run: ls /build && sudo chown $USER /build/qemu\(x86_64\)-x86_64-unknown-linux-gnu
             - persist_to_workspace:
                 paths:
                     - qemu(x86_64)-x86_64-unknown-linux-gnu
@@ -30,7 +30,7 @@ jobs:
         resource_class: macos.m1.medium.gen1
         steps:
             - checkout
-            - run: brew install ninja glib
+            - run: brew install ninja glib meson gettext libffi pkg-config
             - run: ./build_macos.sh
             - run: mv qemu/build/qemu-system-x86_64 qemu/build/qemu-universal-apple-darwin
             - persist_to_workspace:

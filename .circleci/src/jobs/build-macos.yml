@@ -5,7 +5,7 @@ steps:
   - checkout
 
   # Install dependencies
-  - run: brew install ninja glib
+  - run: brew install ninja glib meson gettext libffi pkg-config 
 
   - run: ./build_macos.sh
 
