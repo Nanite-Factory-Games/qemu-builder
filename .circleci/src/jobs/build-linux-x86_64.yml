@@ -8,9 +8,9 @@ steps:
   - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
 
   # Run Docker container with volume mount
-  - run: docker run -v $(realpath ./build):/mnt/build build-linux-x86-64
+  - run: docker run -v /build:/mnt/build build-linux-x86-64
 
-  - run: sudo chown $USER /build/qemu\(x86_64\)-x86_64-unknown-linux-gnu
+  - run: ls ./build && sudo chown $USER ./build/qemu\(x86_64\)-x86_64-unknown-linux-gnu
 
   - persist_to_workspace:
       root: /build

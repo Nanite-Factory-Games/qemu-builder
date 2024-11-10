@@ -6,7 +6,7 @@ jobs:
         steps:
             - checkout
             - run: docker build -t build-linux-aarch64 -f ./Dockerfile_linux_aarch64 .
-            - run: docker run -v $(realpath ./build):/mnt/build build-linux-aarch64
+            - run: docker run -v /build:/mnt/build build-linux-aarch64
             - run: sudo chown $USER /build/qemu\(aarch64\)-aarch64-unknown-linux-gnu
             - persist_to_workspace:
                 paths:
@@ -18,8 +18,8 @@ jobs:
         steps:
             - checkout
             - run: docker build -t build-linux-x86-64 -f ./Dockerfile_linux_x86_64 .
-            - run: docker run -v $(realpath ./build):/mnt/build build-linux-x86-64
-            - run: sudo chown $USER /build/qemu\(x86_64\)-x86_64-unknown-linux-gnu
+            - run: docker run -v /build:/mnt/build build-linux-x86-64
+            - run: ls ./build && sudo chown $USER ./build/qemu\(x86_64\)-x86_64-unknown-linux-gnu
             - persist_to_workspace:
                 paths:
                     - qemu(x86_64)-x86_64-unknown-linux-gnu
@@ -44,18 +44,18 @@ jobs:
         steps:
             - checkout
             - run: docker build --platform=linux/arm64 -t build-windows-aarch64 -f ./Dockerfile_windows_aarch64 .
-            - run: docker run --platform=linux/arm64 -v $(realpath ./build):/mnt/build build-windows-aarch64
+            - run: docker run --platform=linux/arm64 -v /build:/mnt/build build-windows-aarch64
             - persist_to_workspace:
                 paths:
                     - qemu(aarch64)-windows-aarch64-pc-windows-gnu.exe
-                root: build
+                root: /build
     build-windows-x86_64:
         machine:
             image: ubuntu-2404:2024.08.1
         steps:
             - checkout
             - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .
-            - run: docker run -v $(realpath ./build):/mnt/build build-windows-x86-64
+            - run: docker run -v /build:/mnt/build build-windows-x86-64
             - persist_to_workspace:
                 paths:
                     - qemu(x86_64)-windows-x86_64-pc-windows-gnu.exe

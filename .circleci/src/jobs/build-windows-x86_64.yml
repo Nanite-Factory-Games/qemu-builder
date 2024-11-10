@@ -7,7 +7,7 @@ steps:
   - run: docker build -t build-windows-x86-64 -f ./Dockerfile_windows_x86_64 .
 
   # Run Docker container with volume mount
-  - run: docker run -v $(realpath ./build):/mnt/build build-windows-x86-64
+  - run: docker run -v /build:/mnt/build build-windows-x86-64
   - persist_to_workspace:
       root: /build
       paths:

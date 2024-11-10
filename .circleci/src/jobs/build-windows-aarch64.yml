@@ -8,9 +8,9 @@ steps:
   - run: docker build --platform=linux/arm64 -t build-windows-aarch64 -f ./Dockerfile_windows_aarch64 .
 
   # Run Docker container with volume mount
-  - run: docker run --platform=linux/arm64 -v $(realpath ./build):/mnt/build build-windows-aarch64
+  - run: docker run --platform=linux/arm64 -v /build:/mnt/build build-windows-aarch64
 
   - persist_to_workspace:
-      root: build
+      root: /build
       paths:
         - qemu(aarch64)-windows-aarch64-pc-windows-gnu.exe
