@@ -1,0 +1,57 @@
+# Start with a Windows base image
+ARG VERSION=ltsc2022
+FROM mcr.microsoft.com/windows/servercore:$VERSION
+
+# Set up environment variables
+ENV QEMU_VERSION="8.0.0"
+
+RUN powershell -Command \
+    Invoke-WebRequest -Uri https://go.microsoft.com/fwlink/?linkid=2120843 -OutFile winsdksetup.exe
+
+# Install Windows SDK silently
+RUN winsdksetup.exe /quiet /norestart
+
+RUN powershell -Command "[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; \
+    $uri = $(Invoke-RestMethod -UseBasicParsing https://api.github.com/repos/msys2/msys2-installer/releases/latest | \
+            Select -ExpandProperty 'assets' | \
+            Select -ExpandProperty 'browser_download_url' | \
+            Select-String -Pattern '.sfx.exe$').ToString(); \
+    Invoke-WebRequest -UseBasicParsing -Uri $uri -OutFile C:\\windows\\temp\\msys2-base.exe" && \
+	C:\\windows\\temp\\msys2-base.exe && \
+	del "C:\windows\temp\msys2-base.exe" && \
+    setx /M path "%PATH%;C:\msys64\usr\local\bin;C:\msys64\usr\bin;C:\msys64\bin;C:\msys64\usr\bin\site_perl;C:\msys64\usr\bin\vendor_perl;C:\msys64\usr\bin\core_perl;C:\msys64\mingw64\bin\" && \
+	setx HOME "C:\msys64\home\ContainerUser" && \
+	mklink /J C:\\msys64\\home\\ContainerUser C:\\Users\\ContainerUser
+
+RUN	bash -l -c "pacman -Syuu --needed --noconfirm --noprogressbar" && \
+	bash -l -c "pacman -Syu --needed --noconfirm --noprogressbar" && \
+	bash -l -c "rm -fr /C/Users/ContainerUser/* /var/cache/pacman/pkg/*"
+
+RUN "pacman -S --needed --noconfirm --noprogressbar --disable-download-timeout \
+    make \
+    git \
+    texinfo \
+    diffutils \
+    bison \
+    flex \
+    gperf \
+    ninja \
+    automake \
+    autoconf \
+    intltool \
+    libtool \
+    mingw-w64-x86_64-gcc \
+    mingw-w64-x86_64-toolchain \
+    mingw-w64-x86_64-toolchain \
+    python3 && \
+    rm -r /var/cache/pacman/pkg/*"
+
+RUN cp /c/msys64/mingw64/bin/ar.exe /c/msys64/mingw64/bin/x86_64-w64-mingw32-ar.exe
+
+# Clone QEMU source code
+RUN git clone https://gitlab.com/qemu-project/qemu.git --branch stable-8.2 C:/qemu
+
+WORKDIR C:/qemu
+
+COPY build_windows.bat C:/qemu/build.bat
+CMD ["bash", "-l"]

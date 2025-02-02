@@ -123,6 +123,6 @@ WORKDIR /
 
 RUN git clone -b stable-8.2 https://github.com/qemu/qemu.git
 
-COPY build_windows.sh /build_windows.sh
+COPY --chmod=777 ./build_windows_x86_64.sh /build_windows.sh
 
-CMD ["/build_windows.sh", "x86_64-w64-mingw32-"]
+CMD ["/bin/bash", "/build_windows.sh", "x86_64-w64-mingw32-"]

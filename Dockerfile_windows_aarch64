@@ -1,95 +1,25 @@
-FROM fedora:latest
+FROM --platform=linux/aarch64 fedora:latest
 
 # Windows build deps
-RUN dnf install mingw64-pixman mingw64-glib2 mingw64-gmp mingw64-SDL2 mingw64-pkg-config -y
-RUN dnf install mingw64-gcc mingw64-gcc-objc ninja-build mingw64-python3 mingw64-python3-build -y
-RUN dnf install -y git make
+RUN dnf install ninja-build clang zip -y
+RUN dnf install -y git make cmake gcc g++
 
-RUN dnf install -y mingw-binutils-generic.aarch64
-RUN dnf install -y mingw-filesystem-base.noarch
-RUN dnf install -y mingw64-binutils.aarch64
-RUN dnf install -y mingw64-cpp.aarch64
-RUN dnf install -y mingw64-crt.noarch
-RUN dnf install -y mingw64-filesystem.noarch
-RUN dnf install -y mingw64-gcc.aarch64
-RUN dnf install -y mingw64-gcc-c++.aarch64
-RUN dnf install -y mingw64-gcc-objc.aarch64
-RUN dnf install -y mingw64-gcc-objc++.aarch64
-RUN dnf install -y mingw64-gmp.noarch
-RUN dnf install -y mingw64-gnutls.noarch
-RUN dnf install -y mingw64-gstreamer1.noarch
-RUN dnf install -y mingw64-gstreamer1-plugins-base.noarch
-RUN dnf install -y mingw64-headers.noarch
-RUN dnf install -y mingw64-icu.noarch
-RUN dnf install -y mingw64-json-glib.noarch
-RUN dnf install -y mingw64-libepoxy.noarch
-RUN dnf install -y mingw64-libgcc.aarch64
-RUN dnf install -y mingw64-libidn2.noarch
-RUN dnf install -y mingw64-libogg.noarch
-RUN dnf install -y mingw64-libstdc++.aarch64
-RUN dnf install -y mingw64-libtasn1.noarch
-RUN dnf install -y mingw64-libtheora.noarch
-RUN dnf install -y mingw64-libvirt.noarch
-RUN dnf install -y mingw64-libvirt-glib.noarch
-RUN dnf install -y mingw64-libvorbis.noarch
-RUN dnf install -y mingw64-nettle.noarch
-RUN dnf install -y mingw64-opus.noarch
-RUN dnf install -y mingw64-orc.noarch
-RUN dnf install -y mingw64-p11-kit.noarch
-RUN dnf install -y mingw64-sdl12-compat.noarch
-RUN dnf install -y mingw64-spice-glib.noarch
-RUN dnf install -y mingw64-spice-protocol.noarch
-RUN dnf install -y mingw64-spirv-tools.noarch
-RUN dnf install -y mingw64-vkd3d.noarch
-RUN dnf install -y mingw64-vulkan-utility-libraries.noarch
-RUN dnf install -y mingw64-vulkan-validation-layers.noarch
-RUN dnf install -y mingw64-windows-default-manifest.noarch
-RUN dnf install -y mingw64-zstd.noarch
+ENV VCPKG_DEFAULT_TRIPLET=arm64-linux
+ENV VCPKG_FORCE_SYSTEM_BINARIES=1
+ENV VCPKG_USE_SYSTEM_BINARIES=1
+
+RUN git clone https://github.com/microsoft/vcpkg.git
+RUN cd /vcpkg && ./bootstrap-vcpkg.sh
 
 
 # Linux build deps
 RUN dnf install -y dnf-plugins-core
 RUN dnf builddep -y qemu
 
-# Static compile deps
-RUN dnf install -y mingw64-SDL2-static.noarch
-RUN dnf install -y mingw64-angleproject-static.noarch
-RUN dnf install -y mingw64-bzip2-static.noarch
-RUN dnf install -y mingw64-cairo-static.noarch
-RUN dnf install -y mingw64-curl-static.noarch
-RUN dnf install -y mingw64-dbus-static.noarch
-RUN dnf install -y mingw64-dlfcn-static.noarch
-RUN dnf install -y mingw64-expat-static.noarch
-RUN dnf install -y mingw64-fontconfig-static.noarch
-RUN dnf install -y mingw64-freetype-static.noarch
-RUN dnf install -y mingw64-fribidi-static.noarch
-RUN dnf install -y mingw64-gettext-static.noarch
-RUN dnf install -y mingw64-glib2-static.noarch
-RUN dnf install -y mingw64-harfbuzz-static
-RUN dnf install -y mingw64-libffi-static.noarch
-RUN dnf install -y mingw64-libidn2-static.noarch
-RUN dnf install -y mingw64-libjpeg-turbo-static.noarch
-RUN dnf install -y mingw64-libpng-static.noarch
-RUN dnf install -y mingw64-libssh2-static.noarch
-RUN dnf install -y mingw64-libtiff-static.noarch
-# RUN dnf install -y mingw64-libusbx-static.noarch
-RUN dnf install -y mingw64-libxml2-static.noarch
-RUN dnf install -y mingw64-openssl-static.noarch
-RUN dnf install -y mingw64-pango-static.noarch
-RUN dnf install -y mingw64-pcre2-static.noarch
-RUN dnf install -y mingw64-pixman-static.noarch
-RUN dnf install -y mingw64-portablexdr-static.noarch
-RUN dnf install -y mingw64-termcap-static.noarch
-RUN dnf install -y mingw64-usbredir-static.noarch
-RUN dnf install -y mingw64-win-iconv-static.noarch
-RUN dnf install -y mingw64-winpthreads-static.noarch
-RUN dnf install -y mingw64-zlib-static.noarch
-RUN dnf install -y mingw64-zstd.noarch
-
 WORKDIR /
 
 RUN git clone -b stable-8.2 https://github.com/qemu/qemu.git
 
-COPY build_windows_aarch64.sh /build_windows.sh
+COPY --chmod=777 ./build_windows_aarch64.sh /build_windows.sh
 
-CMD ["/build_windows.sh", "x86_64-w64-mingw32-"]
+CMD ["/bin/bash", "/build_windows.sh", "aarch64-w64-mingw32-"]

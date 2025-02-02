@@ -1,14 +1,13 @@
-#!/bin/bash
-set -ex
-cd /qemu
 
-export LD_LIBRARY_PATH=/usr/aarch64-w64-mingw32/sys-root/mingw/lib
-./configure --cross-prefix=aarch64-w64-mingw32- --target-list=aarch64-softmmu --disable-gtk --static \
+
+echo Building qemu...
+export PATH="$PATH:/c/msys64/mingw64/bin"
+./configure --cross-prefix=x86_64-w64-mingw32- --target-list=x86_64-softmmu --disable-gtk --static \
 --disable-gtk \
 --disable-tools --disable-docs \
 --disable-vnc --disable-sdl --disable-gtk --disable-opengl --disable-curses \
 --disable-virtfs --disable-tpm --disable-libnfs --disable-curl \
---disable-vhost-net --disable-spice --disable-slirp --disable-pie --disable-gcrypt \
+--disable-vhost-net --disable-spice --disable-pie --disable-gcrypt \
 --disable-nettle --disable-libssh --disable-gnutls --disable-rdma \
 --disable-libusb --disable-usb-redir --disable-brlapi --disable-vde \
 --disable-smartcard --disable-xen --disable-glusterfs \
@@ -19,8 +18,7 @@ export LD_LIBRARY_PATH=/usr/aarch64-w64-mingw32/sys-root/mingw/lib
 --disable-cloop --disable-dmg --disable-rbd \
 --disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd \
 --disable-guest-agent
-# Required for x86_64 targets
-# --disable-fdt
-make -j$(nproc)
 
-mv build/qemu-system-aarch64 /mnt/build/qemu\(aarch64\)-windows-aarch64-pc-windows-gnu.exe
+bash -c make -j4
+
+echo built qemu
