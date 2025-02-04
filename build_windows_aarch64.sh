@@ -2,23 +2,18 @@
 set -ex
 cd /qemu
 
-export LD_LIBRARY_PATH=/usr/aarch64-w64-mingw32/sys-root/mingw/lib
-./configure --cross-prefix=aarch64-w64-mingw32- --target-list=aarch64-softmmu --disable-gtk --static \
---disable-gtk \
---disable-tools --disable-docs \
---disable-vnc --disable-sdl --disable-gtk --disable-opengl --disable-curses \
---disable-virtfs --disable-tpm --disable-libnfs --disable-curl \
---disable-vhost-net --disable-spice --disable-slirp --disable-pie --disable-gcrypt \
---disable-nettle --disable-libssh --disable-gnutls --disable-rdma \
---disable-libusb --disable-usb-redir --disable-brlapi --disable-vde \
---disable-smartcard --disable-xen --disable-glusterfs \
---disable-libpmem --disable-qom-cast-debug --disable-gio \
---disable-modules --disable-seccomp \
---disable-debug-tcg --disable-tcg-interpreter --disable-mpath --disable-linux-aio \
---disable-parallels --disable-qed --disable-vmdk \
---disable-cloop --disable-dmg --disable-rbd \
---disable-vhdx --disable-vdi --disable-bochs --disable-rdma --disable-zstd \
---disable-guest-agent
+export AR=llvm-ar
+export RANLIB=llvm-ranlib
+
+./configure --target-list=aarch64-softmmu \
+--cc=clang --cxx=clang++ \
+--objcc=clang --host-cc=clang \
+--cross-prefix=aarch64-windows-gnu- \
+--extra-cflags="--target=aarch64-windows-gnu" \
+--extra-ldflags="--target=aarch64-windows-gnu -fuse-ld=lld" \
+--disable-gtk --disable-docs --without-default-features \
+--disable-guest-agent \
+--enable-slirp --enable-fdt --enable-tools --enable-vvfat --enable-qcow1
 # Required for x86_64 targets
 # --disable-fdt
 make -j$(nproc)

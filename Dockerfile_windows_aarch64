@@ -20,6 +20,8 @@ WORKDIR /
 
 RUN git clone -b stable-8.2 https://github.com/qemu/qemu.git
 
+RUN dnf install -y lld llvm
+
 COPY --chmod=777 ./build_windows_aarch64.sh /build_windows.sh
 
 CMD ["/bin/bash", "/build_windows.sh", "aarch64-w64-mingw32-"]
